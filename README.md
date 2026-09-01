@@ -1,6 +1,6 @@
 # Browser culture and environment validation
 
-Sample used to validate per-browser culture, environment name, and environment variables configured with `BrowserOptions.WebAssembly` and `<ConfigureBrowser>`. The test covered Interactive WebAssembly and Interactive Auto. All 10 test cases passed.
+Sample used to validate [dotnet/aspnetcore#68816](https://github.com/dotnet/aspnetcore/issues/68816). It validates per-browser culture, environment name, and environment variables configured with `BrowserOptions.WebAssembly` and `<ConfigureBrowser>` in Interactive WebAssembly and Interactive Auto.
 
 ## Setup
 
