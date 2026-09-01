@@ -1,7 +1,8 @@
 Environment used for the validation
 
-- Operating system: Windows 11 x64
+- Operating system: Windows 11 24H2 x64 (build 26100.9106)
 - .NET SDK: `11.0.100-preview.7.26381.103`
 - ASP.NET Core runtime: `11.0.0-preview.7.26381.103`
-- Browsers: Google Chrome and Microsoft Edge
-- Visual Studio Code
+- Google Chrome: `152.0.7977.65` (Official Build, 64-bit, Stable)
+- Microsoft Edge: `152.0.4191.53` (Official Build, 64-bit; Chromium `152.0.7977.65`)
+- Visual Studio Code: `1.135.0`
