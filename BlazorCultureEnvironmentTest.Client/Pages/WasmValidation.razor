@@ -1,0 +1,16 @@
+@page "/wasm-validation"
+@rendermode InteractiveWebAssembly
+
+<PageTitle>WebAssembly validation</PageTitle>
+
+<ValidationPanel ConfigurationName="Interactive WebAssembly"
+				 ExpectedEnvironment="@ExpectedEnvironment"
+				 ExpectedVisitor="@ExpectedVisitor" />
+
+@code {
+	[SupplyParameterFromQuery(Name = "env")]
+	public string ExpectedEnvironment { get; set; } = "Development";
+
+	[SupplyParameterFromQuery(Name = "visitor")]
+	public string ExpectedVisitor { get; set; } = "Anonymous";
+}

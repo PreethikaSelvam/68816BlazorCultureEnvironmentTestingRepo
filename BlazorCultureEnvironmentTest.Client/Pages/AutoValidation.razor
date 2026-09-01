@@ -1,0 +1,16 @@
+@page "/auto-validation"
+@rendermode InteractiveAuto
+
+<PageTitle>Auto validation</PageTitle>
+
+<ValidationPanel ConfigurationName="Interactive Auto"
+				 ExpectedEnvironment="@ExpectedEnvironment"
+				 ExpectedVisitor="@ExpectedVisitor" />
+
+@code {
+	[SupplyParameterFromQuery(Name = "env")]
+	public string ExpectedEnvironment { get; set; } = "Development";
+
+	[SupplyParameterFromQuery(Name = "visitor")]
+	public string ExpectedVisitor { get; set; } = "Anonymous";
+}

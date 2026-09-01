@@ -1,0 +1,75 @@
+@using System.Globalization
+@using BlazorCultureEnvironmentTest.Client.Validation
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<ValidationPanel> Localizer
+@inject VisitorRuntimeSettings RuntimeSettings
+
+<h1>Browser startup validation</h1>
+
+<p class="lead">@ConfigurationName</p>
+
+<div class="alert @(DisplayedFeatureBanner == "enabled" ? "alert-success" : "alert-secondary")" data-testid="environment-content">
+    @if (DisplayedFeatureBanner == "enabled")
+    {
+        <strong>Validation Feature Banner enabled.</strong>
+    }
+    else
+    {
+        <strong>Standard visitor experience is enabled.</strong>
+    }
+</div>
+
+<table class="table" data-testid="runtime-values">
+    <tbody>
+        <tr><th scope="row">Execution location</th><td data-testid="runtime">@RuntimeSettings.Runtime</td></tr>
+        <tr><th scope="row">Environment</th><td data-testid="environment">@DisplayedEnvironment</td></tr>
+        <tr><th scope="row">Current culture</th><td data-testid="culture">@CultureInfo.CurrentCulture.Name</td></tr>
+        <tr><th scope="row">Current UI culture</th><td data-testid="ui-culture">@CultureInfo.CurrentUICulture.Name</td></tr>
+        <tr><th scope="row">Translated text</th><td data-testid="translation">@Localizer["Greeting"]</td></tr>
+        <tr><th scope="row">Formatted date</th><td data-testid="date">@sampleDate.ToString("D")</td></tr>
+        <tr><th scope="row">Formatted number</th><td data-testid="number">@sampleNumber.ToString("N2")</td></tr>
+        <tr><th scope="row">VISITOR_NAME</th><td data-testid="visitor">@DisplayedVisitor</td></tr>
+        <tr><th scope="row">FEATURE_BANNER</th><td data-testid="feature-banner">@DisplayedFeatureBanner</td></tr>
+        <tr><th scope="row">EMPTY_VALUE</th><td data-testid="empty-value">@(DisplayedEmptyValue == "" ? "(empty)" : DisplayedEmptyValue ?? "(missing)")</td></tr>
+    </tbody>
+</table>
+
+<h2>Culture preference WASM</h2>
+<p>
+    <a class="btn btn-outline-primary me-2" data-enhance-nav="false" href="/preferences/culture?value=en-US&amp;returnUrl=/wasm-validation?env=ValidationLab%26visitor=Cookie">English</a>
+    <a class="btn btn-outline-primary me-2" data-enhance-nav="false" href="/preferences/culture?value=fr-FR&amp;returnUrl=/wasm-validation?env=ValidationLab%26visitor=Cookie">French</a>
+    <a class="btn btn-outline-primary" data-enhance-nav="false" href="/preferences/culture?value=es-ES&amp;returnUrl=/wasm-validation?env=Invented%26visitor=Fallback">Spanish without app translations</a>
+</p>
+
+<h2>Culture preference Auto</h2>
+<p>
+    <a class="btn btn-outline-primary me-2" data-enhance-nav="false" href="/preferences/culture?value=en-US&amp;returnUrl=/auto-validation?env=ValidationLab%26visitor=Auto">English</a>
+    <a class="btn btn-outline-primary me-2" data-enhance-nav="false" href="/preferences/culture?value=fr-FR&amp;returnUrl=/auto-validation?env=ValidationLab%26visitor=Cookie">French</a>
+    <a class="btn btn-outline-primary" data-enhance-nav="false" href="/preferences/culture?value=es-ES&amp;returnUrl=/auto-validation?env=ValidationLab%26visitor=Auto">Spanish without app translations</a>
+</p>
+
+<p>
+    <a href="/?env=ValidationLab&amp;visitor=NavigationStart">Go home, then use the navigation menu to test enhanced navigation</a>
+</p>
+
+@code {
+    [Parameter]
+    public required string ConfigurationName { get; set; }
+
+    [Parameter]
+    public required string ExpectedEnvironment { get; set; }
+
+    [Parameter]
+    public required string ExpectedVisitor { get; set; }
+
+    private readonly DateTime sampleDate = new(2026, 8, 31, 14, 30, 0);
+    private readonly decimal sampleNumber = 1234567.89m;
+
+    private bool IsWebAssembly => RuntimeSettings.Runtime == "WebAssembly";
+    private string DisplayedEnvironment => IsWebAssembly ? RuntimeSettings.EnvironmentName : ExpectedEnvironment;
+    private string DisplayedVisitor => IsWebAssembly ? RuntimeSettings.VisitorName ?? "(missing)" : ExpectedVisitor;
+    private string DisplayedFeatureBanner => IsWebAssembly
+        ? RuntimeSettings.FeatureBanner ?? "(missing)"
+        : ExpectedEnvironment.Equals("ValidationLab", StringComparison.OrdinalIgnoreCase) ? "enabled" : "disabled";
+    private string? DisplayedEmptyValue => IsWebAssembly ? RuntimeSettings.EmptyValue : "";
+}
