@@ -33,6 +33,7 @@ The app passes `VISITOR_NAME`, `FEATURE_BANNER`, and an empty `EMPTY_VALUE` to W
 
 - SDK, runtime, and build output: [`Evidence/Build`](Evidence/Build)
 - Screenshots and videos: [`Evidence/TestCasesAndOutput`](Evidence/TestCasesAndOutput)
+- Full test report: [`BrowserCultureAndEvironmentValidationReport.md`](Evidence/BrowserCultureAndEvironmentValidationReport.docx)
 
 ## Recorded test environment
 
